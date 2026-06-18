@@ -45,4 +45,5 @@ vibe-kpi-demo/
 ## Key Concepts
 - **ETL**: Extract (CSV) → Transform (pandas) → Load (SQLite)
 - **Parameterized SQL**: Prevents SQL injection attacks using `?` placeholders
+- **Allowlist Validation**: Rejects unknown cities using ALLOWED_CITIES set
 - **Testing**: Pytest for validating code behavior

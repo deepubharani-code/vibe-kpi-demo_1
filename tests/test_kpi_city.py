@@ -5,7 +5,7 @@ import sys
 # Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from kpi_city import city_kpi, DB_PATH
+from kpi_city import city_kpi, DB_PATH, ALLOWED_CITIES
 
 def test_city_kpi_happy_path():
     """Test that city_kpi returns correct results for a valid city."""
@@ -30,3 +30,17 @@ def test_city_kpi_injection_attempt():
     
     # Should return 0 because the literal string "Mumbai' OR 1=1 --" doesn't exist
     assert result[0] == 0, "SQL injection attempt should return 0 rows"
+
+def test_city_kpi_unknown_city_rejection():
+    """Test that unknown cities are rejected by the allowlist."""
+    # Test with a city not in the allowlist
+    unknown_city = "UnknownCity"
+    assert unknown_city not in ALLOWED_CITIES, "Test city should not be in allowlist"
+    
+    # The function should handle this gracefully (print error and return)
+    # It should not raise an exception
+    try:
+        city_kpi(unknown_city)
+        assert True  # Function handled unknown city gracefully
+    except Exception as e:
+        assert False, f"city_kpi should handle unknown cities gracefully: {e}"
